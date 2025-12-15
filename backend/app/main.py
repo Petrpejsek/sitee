@@ -61,6 +61,29 @@ async def root():
 
 @app.get("/health")
 async def health():
-    """Health check endpoint"""
-    return {"status": "healthy"}
+    """
+    Health check endpoint
+    
+    Returns:
+        - status: healthy if all systems operational
+        - database: ok if database connection works
+        - version: API version
+    """
+    from app.database import engine
+    from sqlalchemy import text
+    
+    # Check database connection
+    try:
+        async with engine.connect() as conn:
+            await conn.execute(text("SELECT 1"))
+        db_status = "ok"
+    except Exception:
+        db_status = "error"
+    
+    return {
+        "status": "healthy" if db_status == "ok" else "degraded",
+        "database": db_status,
+        "version": "0.1.0",
+        "environment": settings.environment,
+    }
 
