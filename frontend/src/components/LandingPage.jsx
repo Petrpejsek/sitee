@@ -1313,7 +1313,7 @@ export default function LandingPage({ onJobCreated }) {
               </div>
             </div>
             <div className="border-t border-gray-800 pt-8 text-center text-sm">
-              <p>&copy; {new Date().getFullYear()} LLM Audit Engine. All rights reserved.</p>
+              <p>sitee.ai - &copy; 2025 LLM Audit Engine. All rights reserved.</p>
             </div>
           </div>
         </div>
