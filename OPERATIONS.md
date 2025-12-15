@@ -13,25 +13,97 @@ Kompletní provozní příručka pro správu projektu LLM Audit Engine (Sitee).
 | **URL** | https://github.com/Petrpejsek/sitee |
 | **Clone HTTPS** | `https://github.com/Petrpejsek/sitee.git` |
 | **Clone SSH** | `git@github.com:Petrpejsek/sitee.git` |
-| **Branch** | `main` |
+| **Hlavní větve** | `main` (produkce), `dev` (vývoj) |
 
-### Git workflow
+### GitFlow Strategie
+
+Projekt používá **GitFlow** pro organizaci kódu:
+
+| Větev | Účel | Kdy použít |
+|-------|------|------------|
+| `main` | Produkční kód | Stabilní verze nasazená na serveru |
+| `dev` | Vývojová větev | Integrace nových funkcí před produkcí |
+| `feature/*` | Nové funkce | Dočasné větve pro nové funkce (smazat po merge) |
+| `fix/*` | Bugfixy | Dočasné větve pro opravy chyb (smazat po merge) |
+
+### Git workflow - Nová funkce
 
 ```bash
-# Stáhnout nejnovější změny
+# 1. Přepnout se na dev a stáhnout změny
+git checkout dev
+git pull origin dev
+
+# 2. Vytvořit feature větev
+git checkout -b feature/nazev-funkce
+
+# 3. Pracovat na funkci...
+git add .
+git commit -m "Add: popis nové funkce"
+
+# 4. Push feature větve (volitelné, pro backup)
+git push origin feature/nazev-funkce
+
+# 5. Po dokončení: merge do dev
+git checkout dev
+git merge feature/nazev-funkce
+
+# 6. Push dev
+git push origin dev
+
+# 7. Smazat feature větev (lokálně i na GitHubu)
+git branch -d feature/nazev-funkce
+git push origin --delete feature/nazev-funkce
+```
+
+### Git workflow - Bugfix
+
+```bash
+# 1. Vytvořit fix větev z dev
+git checkout dev
+git pull origin dev
+git checkout -b fix/nazev-chyby
+
+# 2. Opravit bug...
+git add .
+git commit -m "Fix: popis opravy"
+
+# 3. Merge do dev
+git checkout dev
+git merge fix/nazev-chyby
+git push origin dev
+
+# 4. Smazat fix větev
+git branch -d fix/nazev-chyby
+git push origin --delete fix/nazev-chyby
+```
+
+### Git workflow - Deploy do produkce
+
+```bash
+# Po testování na dev → nasadit do produkce
+git checkout main
 git pull origin main
+git merge dev
+git push origin main
+
+# Pak na serveru pull main větev (viz Deploy sekce níže)
+```
+
+### Rychlé příkazy
+
+```bash
+# Zobrazit všechny větve
+git branch -a
+
+# Přepnout se mezi větvemi
+git checkout dev        # Vývojová větev
+git checkout main       # Produkční větev
 
 # Zobrazit stav
 git status
 
-# Přidat změny
-git add .
-
-# Commit
-git commit -m "Popis změny"
-
-# Push na GitHub
-git push origin main
+# Zobrazit historii
+git log --oneline --graph --all --decorate
 ```
 
 ### Rollback na předchozí verzi
@@ -151,11 +223,18 @@ certbot --nginx -d <DOMENA>
 
 ### Aktualizace (nový deploy)
 
+**GitFlow proces:** Lokálně mergujte `dev` → `main`, pak na serveru pull `main`.
+
 ```bash
+# LOKÁLNĚ: Nasadit dev do produkce
+git checkout main
+git merge dev
+git push origin main
+
 # Připojit se na server
 ssh root@<IP_ADRESA>
 
-# Stáhnout změny
+# Stáhnout změny z main (produkční větev)
 cd /var/www/llm-audit-engine
 sudo -u www-data git pull origin main
 
