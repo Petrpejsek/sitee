@@ -1,0 +1,17 @@
+[Unit]
+Description=LLM Audit Engine Report Cleanup
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+User=www-data
+WorkingDirectory=/var/www/llm-audit-engine/backend
+Environment="PATH=/var/www/llm-audit-engine/backend/venv/bin"
+EnvironmentFile=/var/www/llm-audit-engine/backend/.env
+
+ExecStart=/var/www/llm-audit-engine/backend/venv/bin/python -m app.cleanup
+
+StandardOutput=append:/var/log/llm-audit/cleanup.log
+StandardError=append:/var/log/llm-audit/cleanup-error.log
+
+

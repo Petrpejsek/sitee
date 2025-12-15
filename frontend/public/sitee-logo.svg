@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 300" fill="none">
+  <!-- S-connector with circles (blue) -->
+  <g id="s-connector">
+    <!-- Top circle -->
+    <circle cx="80" cy="70" r="45" fill="white" stroke="#3B82F6" stroke-width="20"/>
+    
+    <!-- Bottom left circle -->
+    <circle cx="80" cy="230" r="45" fill="white" stroke="#3B82F6" stroke-width="20"/>
+    
+    <!-- Right circle -->
+    <circle cx="240" cy="150" r="45" fill="white" stroke="#3B82F6" stroke-width="20"/>
+    
+    <!-- S-shaped path connecting circles -->
+    <path d="M 80 115 Q 80 150 120 150 L 195 150 Q 240 150 240 195" 
+          stroke="#3B82F6" 
+          stroke-width="30" 
+          fill="none" 
+          stroke-linecap="round"/>
+    <path d="M 80 115 Q 80 80 120 80 L 195 80 Q 240 80 240 105" 
+          stroke="#3B82F6" 
+          stroke-width="30" 
+          fill="none" 
+          stroke-linecap="round"/>
+  </g>
+  
+  <!-- sitee.ai text -->
+  <text x="300" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="120" font-weight="900" fill="#1F2937">
+    <tspan fill="#3B82F6">sitee</tspan><tspan fill="#1F2937">.ai</tspan>
+  </text>
+</svg>

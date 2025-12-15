@@ -1,0 +1,25 @@
+[Unit]
+Description=LLM Audit Engine Background Worker
+After=network.target postgresql.service llm-audit-api.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/llm-audit-engine/backend
+Environment="PATH=/var/www/llm-audit-engine/backend/venv/bin"
+EnvironmentFile=/var/www/llm-audit-engine/backend/.env
+
+ExecStart=/var/www/llm-audit-engine/backend/venv/bin/python -m app.worker
+
+Restart=always
+RestartSec=10
+
+# Logs
+StandardOutput=append:/var/log/llm-audit/worker.log
+StandardError=append:/var/log/llm-audit/worker-error.log
+
+[Install]
+WantedBy=multi-user.target
+
+

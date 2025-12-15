@@ -1,0 +1,13 @@
+[Unit]
+Description=Run LLM Audit cleanup daily
+Requires=llm-audit-cleanup.service
+
+[Timer]
+OnCalendar=daily
+OnCalendar=03:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+
+
